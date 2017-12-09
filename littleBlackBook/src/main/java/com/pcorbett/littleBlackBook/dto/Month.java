@@ -49,6 +49,6 @@ public class Month {
 
 	@OneToMany
 	@JoinTable(name = "MONTH_EXPENSES", joinColumns = @JoinColumn(name = "MONTH_ID") , inverseJoinColumns = @JoinColumn(name = "EXPENSE_ID") )
-	private List<Expense> expenses;
+	private List<SingleExpense> expenses;
 
 }

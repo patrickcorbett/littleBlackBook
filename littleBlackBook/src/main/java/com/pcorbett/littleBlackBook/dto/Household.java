@@ -36,6 +36,10 @@ public class Household {
 	@JoinTable(name = "HOUSEHOLD_INCOMES", joinColumns = @JoinColumn(name = "HOUSEHOLD_ID") , inverseJoinColumns = @JoinColumn(name = "INCOME_ID") )
 	private List<Income> incomes;
 
+	@OneToMany
+	@JoinTable(name = "HOUSEHOLD_EXPENSES", joinColumns = @JoinColumn(name = "HOUSEHOLD_ID") , inverseJoinColumns = @JoinColumn(name = "EXPENSE_ID") )
+	private List<RecurringExpense> expenses;
+
 	/**
 	 * @return the id
 	 */
@@ -79,6 +83,21 @@ public class Household {
 	 */
 	public void setIncomes(List<Income> incomes) {
 		this.incomes = incomes;
+	}
+
+	/**
+	 * @return the expenses
+	 */
+	public List<RecurringExpense> getExpenses() {
+		return expenses;
+	}
+
+	/**
+	 * @param expenses
+	 *            the expenses to set
+	 */
+	public void setExpenses(List<RecurringExpense> expenses) {
+		this.expenses = expenses;
 	}
 
 }

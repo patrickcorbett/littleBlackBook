@@ -2,9 +2,7 @@ package com.pcorbett.littleBlackBook.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -13,13 +11,9 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table
-public class SingleExpense {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
-	private String id;
+@Table(name = "SINGLE_EXPENSE")
+@PrimaryKeyJoinColumn(name = "ID")
+public class SingleExpense extends Expense {
 
 	@Column(name = "COMPLETE")
 	private Boolean complete;

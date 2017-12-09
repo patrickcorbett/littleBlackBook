@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 /**
@@ -19,6 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Expense {
 
 	@Id
@@ -32,13 +35,67 @@ public class Expense {
 	@Column(name = "AMOUNT")
 	private BigDecimal amount;
 
-	@Column(name = "PRIORITY")
-	private Integer priority;
-
-	@Column(name = "DEBIT_ON_DOM")
-	private Integer debitOnDOM;
-
 	@Column(name = "FORMULA")
 	private String formula;
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return Description;
+	}
+
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+	/**
+	 * @return the amount
+	 */
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	/**
+	 * @param amount
+	 *            the amount to set
+	 */
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	/**
+	 * @return the formula
+	 */
+	public String getFormula() {
+		return formula;
+	}
+
+	/**
+	 * @param formula
+	 *            the formula to set
+	 */
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
 
 }
