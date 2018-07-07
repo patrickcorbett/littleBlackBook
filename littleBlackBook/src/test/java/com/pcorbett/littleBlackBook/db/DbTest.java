@@ -49,16 +49,8 @@ public class DbTest {
 	/**
 	 * Fires when all tests complete
 	 */
-	@BeforeClass
-	public void dbGui() {
-		// org.hsqldb.util.DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:file:testdb", "--noexit" });
-	}
-	
-	/**
-	 * Fires when all tests complete
-	 */
 	@AfterClass
-	public void done() {
+	public static void done() {
 		System.out.println("OK");
 	}
 
@@ -168,9 +160,8 @@ public class DbTest {
 	}
 
 	/**
-	 * A test to ensure an Income can only exist in one household, attempting to
-	 * add an existing income to an new household should result in a database
-	 * error
+	 * A test to ensure an Income can only exist in one household, attempting to add
+	 * an existing income to an new household should result in a database error
 	 */
 	@Test(expected = DataIntegrityViolationException.class)
 	public void breakIncomeHouseholdOneToOne() {
