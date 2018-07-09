@@ -29,7 +29,7 @@ public class Month {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private String id;
+	private Long id;
 
 	@JoinColumn(name = "INCOME_ID")
 	@OneToOne

@@ -27,7 +27,7 @@ public class Household {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
-	private String id;
+	private Long id;
 
 	@Column(name = "NAME")
 	private String name;
@@ -43,7 +43,7 @@ public class Household {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -51,7 +51,7 @@ public class Household {
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
