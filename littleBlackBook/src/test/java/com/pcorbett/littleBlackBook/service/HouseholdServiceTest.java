@@ -2,9 +2,9 @@ package com.pcorbett.littleBlackBook.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -78,8 +79,10 @@ public class HouseholdServiceTest extends BaseTest {
 				createdHousehold.getName());
 
 		// ensure the collections are empty
-		assertEquals("The createdHousehold Incomes collection should be empty", 0, createdHousehold.getExpenses().size());
-		assertEquals("The createdHousehold Expenses collection should be empty", 0, createdHousehold.getExpenses().size());
+		assertEquals("The createdHousehold Incomes collection should be empty", 0,
+				createdHousehold.getExpenses().size());
+		assertEquals("The createdHousehold Expenses collection should be empty", 0,
+				createdHousehold.getExpenses().size());
 	}
 
 	/**
@@ -100,7 +103,8 @@ public class HouseholdServiceTest extends BaseTest {
 				createdHousehold.getName());
 
 		// ensure the expenses collection is empty
-		assertEquals("The createdHousehold Income collection should be empty", 0, createdHousehold.getExpenses().size());
+		assertEquals("The createdHousehold Income collection should be empty", 0,
+				createdHousehold.getExpenses().size());
 
 		// ensure that the income list is defined
 		assertNotNull("The income list should not be null", createdHousehold.getIncomes());
@@ -273,4 +277,28 @@ public class HouseholdServiceTest extends BaseTest {
 		assertEquals("The household should have no incomes", 0, reloadedHousehold.getIncomes().size());
 	}
 
+	/**
+	 * A test to ensure an Income can only exist in one household, attempting to add
+	 * an existing income to an new household should result in a database error
+	 */
+	@Test(expected = DataIntegrityViolationException.class)
+	public void breakIncomeHouseholdOneToOne() {
+		// define a household
+		Household household1 = getTestHousehold(false, false);
+		Household household2 = getTestHousehold(false, false);
+
+		// save the household
+		Household createdHousehold1 = householdService.saveHousehold(household1);
+		Household createdHousehold2 = householdService.saveHousehold(household2);
+
+		// assign income to a household1
+		createdHousehold1.setIncomes(getTestIncomes());
+
+		// update household1
+		Household updatedHousehold1 = householdService.saveHousehold(createdHousehold1);
+
+		// update the household2 with the same income, should fail!
+		createdHousehold2.setIncomes(updatedHousehold1.getIncomes());
+		householdService.saveHousehold(createdHousehold2);
+	}
 }
