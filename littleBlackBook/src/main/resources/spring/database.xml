@@ -28,7 +28,7 @@
 		p:jpaVendorAdapter-ref="hibernateJpaAdapter"
 		p:jpaPropertyMap-ref="jpaPropertyMap"/>
 
-	<bean id="org.h2.tools.Server" class="org.h2.tools.Server"
+	<bean id="h2WebServer" class="org.h2.tools.Server"
 		factory-method="createWebServer" init-method="start"
 		destroy-method="stop">
 		<constructor-arg

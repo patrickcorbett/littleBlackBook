@@ -1,7 +1,7 @@
 package com.pcorbett.littleBlackBook.dto;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +49,6 @@ public class Month {
 
 	@OneToMany
 	@JoinTable(name = "MONTH_EXPENSES", joinColumns = @JoinColumn(name = "MONTH_ID") , inverseJoinColumns = @JoinColumn(name = "EXPENSE_ID") )
-	private List<SingleExpense> expenses;
+	private Set<SingleExpense> expenses;
 
 }

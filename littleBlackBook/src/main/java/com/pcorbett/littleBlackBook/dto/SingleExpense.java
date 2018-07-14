@@ -7,8 +7,8 @@ import javax.persistence.Table;
 
 /**
  * @author Patrick Corbett
+ * 
  * @created 28.08.2016
- *
  */
 @Entity
 @Table(name = "SINGLE_EXPENSE")

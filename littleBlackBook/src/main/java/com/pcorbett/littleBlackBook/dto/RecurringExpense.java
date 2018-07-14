@@ -11,9 +11,8 @@ import javax.persistence.Table;
  * POJO Class for the description of a particular expense
  * 
  * @author Patrick Corbett
- * @created 29 Aug 2016
- * 
  *
+ * @created 14.07.2018
  */
 @Entity
 @Table(name = "RECURRING_EXPENSE")
