@@ -2,9 +2,9 @@ package com.pcorbett.littleBlackBook.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -110,6 +110,17 @@ public class HouseholdServiceTest extends BaseTest {
 		assertNotNull("The income list should not be null", createdHousehold.getIncomes());
 		assertEquals("The household should have one income", getTestIncomes().size(),
 				createdHousehold.getIncomes().size());
+
+		// get first income
+		Income firstIncome = createdHousehold.getIncomes().iterator().next();
+		Income firstTestIncome = getTestIncomes().iterator().next();
+
+		assertNotNull("The Income ID should not be null", firstIncome.getId());
+
+		assertEquals("The Income 'Name' should match", firstIncome.getName(), firstTestIncome.getName());
+		assertEquals("The Income 'Gross' should match", firstIncome.getGross(), firstTestIncome.getGross());
+		assertEquals("The Income 'Gross' should match", firstIncome.getNet(), firstTestIncome.getNet());
+		assertEquals("The Income 'Currency' should match", firstIncome.getCurrency(), firstTestIncome.getCurrency());
 	}
 
 	/**
@@ -158,6 +169,17 @@ public class HouseholdServiceTest extends BaseTest {
 		assertNotNull("The expenses list should not be null", createdHousehold.getExpenses());
 		assertEquals("The household should have two expenses", getTestExpenses().size(),
 				createdHousehold.getExpenses().size());
+		
+		// get first income
+		RecurringExpense firstExpense = createdHousehold.getExpenses().iterator().next();
+		RecurringExpense firstTestExpense = getTestExpenses().iterator().next();
+
+		assertNotNull("The Expense ID should not be null", firstExpense.getId());
+
+		assertEquals("The Expense 'Description' should match", firstExpense.getDescription(), firstTestExpense.getDescription());
+		assertEquals("The Expense 'Amount' should match", firstExpense.getAmount(), firstTestExpense.getAmount());
+		assertEquals("The Expense 'Priority' should match", firstExpense.getPriority(), firstTestExpense.getPriority());
+		assertEquals("The Expense 'DebitOnDOM' should match", firstExpense.getDebitOnDOM(), firstTestExpense.getDebitOnDOM());
 	}
 
 	@Test
