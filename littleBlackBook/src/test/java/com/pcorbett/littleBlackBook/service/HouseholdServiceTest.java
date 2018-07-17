@@ -28,7 +28,7 @@ import com.pcorbett.littleBlackBook.dto.RecurringExpense;
  *
  * @created 29.08.2016
  */
-@ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath:spring/test-applicationContext.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class HouseholdServiceTest extends BaseTest {
 
