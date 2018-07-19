@@ -7,7 +7,9 @@ import java.util.Set;
 
 import com.pcorbett.littleBlackBook.dto.Household;
 import com.pcorbett.littleBlackBook.dto.Income;
+import com.pcorbett.littleBlackBook.dto.Month;
 import com.pcorbett.littleBlackBook.dto.RecurringExpense;
+import com.pcorbett.littleBlackBook.dto.SingleExpense;
 
 /**
  * JUnit test to populate and test the tables and their relationships and
@@ -34,10 +36,7 @@ public abstract class BaseTest {
 		return household;
 	}
 
-	public Set<Income> getTestIncomes() {
-		// create incomes
-		Set<Income> incomes = new LinkedHashSet<Income>();
-
+	public Income getTestIncome() {
 		// create an income
 		Income houseDadIncome = new Income();
 		houseDadIncome.setName("DAD INCOME");
@@ -46,7 +45,15 @@ public abstract class BaseTest {
 		houseDadIncome.setNet(new BigDecimal(3000.00));
 		houseDadIncome.setValidFrom(new Date());
 
-		incomes.add(houseDadIncome);
+		return houseDadIncome;
+	}
+
+	public Set<Income> getTestIncomes() {
+		// create incomes
+		Set<Income> incomes = new LinkedHashSet<Income>();
+
+		// create and add an income
+		incomes.add(getTestIncome());
 
 		return incomes;
 	}
@@ -75,5 +82,27 @@ public abstract class BaseTest {
 		expenses.add(petrolExpense);
 
 		return expenses;
+	}
+
+	public Month getTestMonth(Household pHousehold, boolean pExpenses) {
+		// create month
+		Month month = new Month();
+
+		if (null != pHousehold) {
+			month.setHousehold(pHousehold);
+		}
+		
+		month.setYear("2018");
+		month.setMonth("08");
+		month.setBonus(new BigDecimal(0.00));
+		month.setProjectedNet(new BigDecimal(3000.00));
+
+		Set<SingleExpense> expenses = new LinkedHashSet<SingleExpense>();
+
+		if (pExpenses) {
+			month.setExpenses(expenses);
+		}
+
+		return month;
 	}
 }

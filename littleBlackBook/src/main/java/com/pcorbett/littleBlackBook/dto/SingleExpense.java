@@ -18,4 +18,12 @@ public class SingleExpense extends Expense {
 	@Column(name = "COMPLETE")
 	private Boolean complete;
 
+	public Boolean getComplete() {
+		return complete;
+	}
+
+	public void setComplete(Boolean pComplete) {
+		complete = pComplete;
+	}
+
 }

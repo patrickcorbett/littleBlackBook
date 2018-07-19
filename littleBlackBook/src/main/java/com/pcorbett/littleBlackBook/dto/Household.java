@@ -40,7 +40,7 @@ public class Household {
 	@Fetch(FetchMode.JOIN)
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "HOUSEHOLD_INCOMES", joinColumns = @JoinColumn(name = "HOUSEHOLD_ID"), inverseJoinColumns = @JoinColumn(name = "INCOME_ID"))
-	private Set<Income> incomes = new LinkedHashSet<>();;
+	private Set<Income> incomes = new LinkedHashSet<>();
 
 	@Fetch(FetchMode.JOIN)
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
