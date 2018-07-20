@@ -8,31 +8,33 @@
      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<util:map id="jpaPropertyMap">
-		<entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"></entry>
+		<entry key="hibernate.hbm2ddl.auto"
+			value="${hibernate.hbm2ddl.auto}" />
 		<entry key="hibernate.dialect" value="${hibernate.dialect}" />
 		<entry key="hibernate.show_sql" value="${hibernate.show_sql}" />
 	</util:map>
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		p:driverClassName="${db.jdbcClass}"
-		p:url="${db.jdbc}"
-		p:username="${db.username}"
-		p:password="${db.password}"
+		p:driverClassName="${db.jdbcClass}" p:url="${db.jdbc}"
+		p:username="${db.username}" p:password="${db.password}"
 		lazy-init="false" />
 
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-		p:dataSource-ref="dataSource" 
+		p:dataSource-ref="dataSource"
 		p:packagesToScan="com.pcorbett.littleBlackBook.dto"
 		p:jpaVendorAdapter-ref="hibernateJpaAdapter"
-		p:jpaPropertyMap-ref="jpaPropertyMap"/>
+		p:jpaPropertyMap-ref="jpaPropertyMap" />
 
-<!-- 	<bean id="h2WebServer" class="org.h2.tools.Server" -->
-<!-- 		factory-method="createWebServer" init-method="start" -->
-<!-- 		destroy-method="stop"> -->
-<!-- 		<constructor-arg -->
-<!-- 			value="-web,-webAllowOthers,-webPort,8082" /> -->
-<!-- 	</bean> -->
+	<!-- Database specific beans triggered by the active profile -->
+	<beans profile="h2">
+		<bean id="h2WebServer" class="org.h2.tools.Server"
+			factory-method="createWebServer" init-method="start"
+			destroy-method="stop">
+			<constructor-arg
+				value="-web,-webAllowOthers,-webPort,8082" />
+		</bean>
+	</beans>
 
 </beans>
