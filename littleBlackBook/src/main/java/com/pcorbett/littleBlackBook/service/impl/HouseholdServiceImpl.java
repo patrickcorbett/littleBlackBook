@@ -33,7 +33,7 @@ public class HouseholdServiceImpl implements HouseholdService {
 
 	@Override
 	public Household getHouseholdById(Long pId) {
-		return householdDao.findOne(pId);
+		return householdDao.findById(pId).get();
 	}
 
 	@Override
