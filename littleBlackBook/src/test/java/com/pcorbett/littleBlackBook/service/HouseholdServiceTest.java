@@ -304,7 +304,7 @@ public class HouseholdServiceTest extends BaseTest {
 	 * an existing income to an new household should result in a database error
 	 */
 	@Test(expected = DataIntegrityViolationException.class)
-	public void breakIncomeHouseholdOneToOne() {
+	public void testHouseholdIncomeOneToOneConstraint() {
 		// define a household
 		Household household1 = getTestHousehold(false, false);
 		Household household2 = getTestHousehold(false, false);

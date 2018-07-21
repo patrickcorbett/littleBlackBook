@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,7 +49,7 @@ public class Month {
 	@Column(name = "PROJECTED_NET")
 	private BigDecimal projectedNet;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "MONTH_EXPENSES", joinColumns = @JoinColumn(name = "MONTH_ID"), inverseJoinColumns = @JoinColumn(name = "EXPENSE_ID"))
 	private Set<SingleExpense> expenses = new LinkedHashSet<>();
 

@@ -3,6 +3,7 @@ package com.pcorbett.littleBlackBook;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.pcorbett.littleBlackBook.dto.Household;
@@ -66,7 +67,7 @@ public abstract class BaseTest {
 		RecurringExpense rentExpense = new RecurringExpense();
 		rentExpense.setAmount(new BigDecimal(1200.00));
 		rentExpense.setDebitOnDOM(1);
-		rentExpense.setDescription("Rent");
+		rentExpense.setDescription("Rent RECURRING");
 		// exp1.setFormula(formula);
 		rentExpense.setPriority(0);
 		rentExpense.setValidFrom(new Date());
@@ -76,7 +77,7 @@ public abstract class BaseTest {
 		// PETROL
 		RecurringExpense petrolExpense = new RecurringExpense();
 		petrolExpense.setAmount(new BigDecimal(100.00));
-		petrolExpense.setDescription("Petrol");
+		petrolExpense.setDescription("Petrol RECURRING");
 		petrolExpense.setValidFrom(new Date());
 
 		expenses.add(petrolExpense);
@@ -91,18 +92,38 @@ public abstract class BaseTest {
 		if (null != pHousehold) {
 			month.setHousehold(pHousehold);
 		}
-		
+
 		month.setYear("2018");
 		month.setMonth("08");
 		month.setBonus(new BigDecimal(0.00));
 		month.setProjectedNet(new BigDecimal(3000.00));
 
-		Set<SingleExpense> expenses = new LinkedHashSet<SingleExpense>();
-
 		if (pExpenses) {
-			month.setExpenses(expenses);
+			month.setExpenses(getSingleExpenses());
 		}
 
 		return month;
+	}
+
+	public Set<SingleExpense> getSingleExpenses() {
+		// create expenses
+		Set<SingleExpense> expenses = new LinkedHashSet<SingleExpense>();
+
+		// RENT
+		SingleExpense rentExpense = new SingleExpense();
+		rentExpense.setAmount(new BigDecimal(1200.00));
+		rentExpense.setDescription("Rent SINGLE");
+		// exp1.setFormula(formula);
+
+		expenses.add(rentExpense);
+
+		// PETROL
+		SingleExpense petrolExpense = new SingleExpense();
+		petrolExpense.setAmount(new BigDecimal(100.00));
+		petrolExpense.setDescription("Petrol SINGLE");
+
+		expenses.add(petrolExpense);
+
+		return expenses;
 	}
 }
