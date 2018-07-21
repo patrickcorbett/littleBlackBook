@@ -2,7 +2,7 @@ package com.pcorbett.littleBlackBook.service;
 
 import java.util.List;
 
-import com.pcorbett.littleBlackBook.dto.Household;
+import com.pcorbett.littleBlackBook.domain.db.Household;
 
 /**
  * @author Patrick Corbett

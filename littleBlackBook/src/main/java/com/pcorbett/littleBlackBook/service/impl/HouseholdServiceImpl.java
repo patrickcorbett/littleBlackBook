@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.pcorbett.littleBlackBook.dao.HouseholdDao;
-import com.pcorbett.littleBlackBook.dto.Household;
+import com.pcorbett.littleBlackBook.domain.db.Household;
 import com.pcorbett.littleBlackBook.service.HouseholdService;
 
 /**

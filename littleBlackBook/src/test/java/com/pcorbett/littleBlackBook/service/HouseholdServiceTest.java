@@ -17,9 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pcorbett.littleBlackBook.BaseTest;
-import com.pcorbett.littleBlackBook.dto.Household;
-import com.pcorbett.littleBlackBook.dto.Income;
-import com.pcorbett.littleBlackBook.dto.RecurringExpense;
+import com.pcorbett.littleBlackBook.domain.db.Household;
+import com.pcorbett.littleBlackBook.domain.db.Income;
+import com.pcorbett.littleBlackBook.domain.db.RecurringExpense;
 
 /**
  * JUnit test to test the Household service

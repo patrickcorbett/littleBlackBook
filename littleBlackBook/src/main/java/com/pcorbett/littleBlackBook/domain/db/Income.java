@@ -1,4 +1,4 @@
-package com.pcorbett.littleBlackBook.dto;
+package com.pcorbett.littleBlackBook.domain.db;
 
 import java.math.BigDecimal;
 import java.util.Date;

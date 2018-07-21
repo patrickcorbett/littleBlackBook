@@ -1,6 +1,6 @@
 package com.pcorbett.littleBlackBook.service;
 
-import com.pcorbett.littleBlackBook.dto.Month;
+import com.pcorbett.littleBlackBook.domain.db.Month;
 
 /**
  * @author Patrick Corbett

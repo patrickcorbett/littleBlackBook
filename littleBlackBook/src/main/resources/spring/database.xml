@@ -23,7 +23,7 @@
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		p:dataSource-ref="dataSource"
-		p:packagesToScan="com.pcorbett.littleBlackBook.dto"
+		p:packagesToScan="com.pcorbett.littleBlackBook.domain.db"
 		p:jpaVendorAdapter-ref="hibernateJpaAdapter"
 		p:jpaPropertyMap-ref="jpaPropertyMap" />
 

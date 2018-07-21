@@ -1,4 +1,4 @@
-package com.pcorbett.littleBlackBook.dto;
+package com.pcorbett.littleBlackBook.domain.db;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

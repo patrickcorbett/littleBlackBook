@@ -1,4 +1,4 @@
-package com.pcorbett.littleBlackBook.dto;
+package com.pcorbett.littleBlackBook.domain.db;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

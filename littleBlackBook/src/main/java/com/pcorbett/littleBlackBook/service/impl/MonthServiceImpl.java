@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.pcorbett.littleBlackBook.dao.MonthDao;
-import com.pcorbett.littleBlackBook.dto.Month;
+import com.pcorbett.littleBlackBook.domain.db.Month;
 import com.pcorbett.littleBlackBook.service.MonthService;
 
 /**

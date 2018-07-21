@@ -6,11 +6,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.pcorbett.littleBlackBook.dto.Household;
-import com.pcorbett.littleBlackBook.dto.Income;
-import com.pcorbett.littleBlackBook.dto.Month;
-import com.pcorbett.littleBlackBook.dto.RecurringExpense;
-import com.pcorbett.littleBlackBook.dto.SingleExpense;
+import com.pcorbett.littleBlackBook.domain.db.Household;
+import com.pcorbett.littleBlackBook.domain.db.Income;
+import com.pcorbett.littleBlackBook.domain.db.Month;
+import com.pcorbett.littleBlackBook.domain.db.RecurringExpense;
+import com.pcorbett.littleBlackBook.domain.db.SingleExpense;
 
 /**
  * JUnit test to populate and test the tables and their relationships and

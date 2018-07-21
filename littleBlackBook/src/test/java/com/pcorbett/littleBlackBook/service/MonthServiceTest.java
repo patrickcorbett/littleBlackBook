@@ -17,9 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pcorbett.littleBlackBook.BaseTest;
-import com.pcorbett.littleBlackBook.dto.Household;
-import com.pcorbett.littleBlackBook.dto.Month;
-import com.pcorbett.littleBlackBook.dto.SingleExpense;
+import com.pcorbett.littleBlackBook.domain.db.Household;
+import com.pcorbett.littleBlackBook.domain.db.Month;
+import com.pcorbett.littleBlackBook.domain.db.SingleExpense;
 
 @ContextConfiguration(locations = { "classpath:spring/test-applicationContext.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -3,7 +3,7 @@ package com.pcorbett.littleBlackBook.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.pcorbett.littleBlackBook.dto.Month;
+import com.pcorbett.littleBlackBook.domain.db.Month;
 
 /**
  * Spring Data Repository for the {@link Month}
