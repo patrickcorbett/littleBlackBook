@@ -55,6 +55,13 @@ public class Household {
 	}
 
 	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long pId) {
+		id = pId;
+	}
+
+	/**
 	 * @return the name
 	 */
 	public String getName() {

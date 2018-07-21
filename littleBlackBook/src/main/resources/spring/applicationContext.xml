@@ -17,4 +17,7 @@
 	<context:component-scan
 		base-package="com.pcorbett.littleBlackBook" />
 
+	<!-- ModelMapper for Domain to DTO Object Conversion -->
+	<bean id="modelMapper" class="org.modelmapper.ModelMapper" />
+
 </beans>
