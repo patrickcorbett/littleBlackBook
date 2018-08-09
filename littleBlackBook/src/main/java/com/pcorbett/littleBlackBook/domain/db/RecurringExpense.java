@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -31,6 +33,10 @@ public class RecurringExpense extends Expense {
 	@Column(name = "VALID_TO")
 	private Date validTo;
 
+	@ManyToOne
+	@JoinColumn(name = "FK_HOUSEHOLD")
+	private Household household;
+
 	/**
 	 * @return the priority
 	 */
@@ -39,8 +45,7 @@ public class RecurringExpense extends Expense {
 	}
 
 	/**
-	 * @param priority
-	 *            the priority to set
+	 * @param priority the priority to set
 	 */
 	public void setPriority(Integer priority) {
 		this.priority = priority;
@@ -54,8 +59,7 @@ public class RecurringExpense extends Expense {
 	}
 
 	/**
-	 * @param debitOnDOM
-	 *            the debitOnDOM to set
+	 * @param debitOnDOM the debitOnDOM to set
 	 */
 	public void setDebitOnDOM(Integer debitOnDOM) {
 		this.debitOnDOM = debitOnDOM;
@@ -69,8 +73,7 @@ public class RecurringExpense extends Expense {
 	}
 
 	/**
-	 * @param validFrom
-	 *            the validFrom to set
+	 * @param validFrom the validFrom to set
 	 */
 	public void setValidFrom(Date validFrom) {
 		this.validFrom = validFrom;
@@ -84,11 +87,24 @@ public class RecurringExpense extends Expense {
 	}
 
 	/**
-	 * @param validTo
-	 *            the validTo to set
+	 * @param validTo the validTo to set
 	 */
 	public void setValidTo(Date validTo) {
 		this.validTo = validTo;
+	}
+
+	/**
+	 * @return the household
+	 */
+	public Household getHousehold() {
+		return household;
+	}
+
+	/**
+	 * @param pHousehold the household to set
+	 */
+	public void setHousehold(Household pHousehold) {
+		household = pHousehold;
 	}
 
 }

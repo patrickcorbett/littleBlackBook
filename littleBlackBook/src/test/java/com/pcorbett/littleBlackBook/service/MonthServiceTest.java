@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 import java.util.Iterator;
 
+import org.hibernate.LazyInitializationException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,9 +38,6 @@ public class MonthServiceTest extends BaseTest {
 	@Before
 	public void beforeTest() {
 		// clear the database in case it wasn't cleared due to an error
-		// The order of the delete is important, FK constraint between Household and
-		// Month
-		monthService.deleteAllMonths();
 		householdService.deleteAllHouseholds();
 	}
 
@@ -48,9 +46,7 @@ public class MonthServiceTest extends BaseTest {
 	 */
 	@After
 	public void afterTest() {
-		// clear the database, the order of the delete is important, FK constraint
-		// between Household and Month
-		monthService.deleteAllMonths();
+		// clear the database
 		householdService.deleteAllHouseholds();
 	}
 
@@ -69,24 +65,6 @@ public class MonthServiceTest extends BaseTest {
 
 		// save a month, results in error as Income cannot be null
 		monthService.saveMonth(month);
-	}
-
-	@Test(expected = DataIntegrityViolationException.class)
-	public void testMonthHouseholdConstaint() {
-		// define a household
-		Household household = getTestHousehold(true, false);
-
-		// save the household
-		Household createdHousehold = householdService.saveHousehold(household);
-
-		// define a month with the income
-		Month month = getTestMonth(createdHousehold, false);
-
-		// save a month
-		monthService.saveMonth(month);
-
-		// Delete the household, foreign key constraint
-		householdService.deleteAllHouseholds();
 	}
 
 	@Test
@@ -136,7 +114,9 @@ public class MonthServiceTest extends BaseTest {
 		assertEquals("The createdMonth 'Expenses' collection should be empty", 0, createdMonth.getExpenses().size());
 
 		// add the expenses
-		createdMonth.setExpenses(getSingleExpenses());
+		for (SingleExpense expense : getSingleExpenses()) {
+			createdMonth.addExpense(expense);
+		}
 
 		// update the month
 		Month updatedMonth = monthService.saveMonth(createdMonth);
@@ -192,7 +172,7 @@ public class MonthServiceTest extends BaseTest {
 		// update the month
 		Month updatedMonth = monthService.saveMonth(createdMonth);
 
-		// ensure the createdMonth collection are empty
+		// ensure the updatedMonth collection has only one item
 		assertEquals("The updatedMonth 'Expenses' collection should only have one item", 1,
 				updatedMonth.getExpenses().size());
 	}
@@ -258,7 +238,7 @@ public class MonthServiceTest extends BaseTest {
 		// save a month
 		Month createdMonth = monthService.saveMonth(month);
 
-		// ensure the createdMonth collection are empty
+		// ensure the createdMonth collection contains two items
 		assertEquals("The createdMonth 'Expenses' collection should have two expenses", 2,
 				createdMonth.getExpenses().size());
 
@@ -275,5 +255,47 @@ public class MonthServiceTest extends BaseTest {
 		// ensure the updatedMonth collection should have three expenses
 		assertEquals("The updatedMonth 'Expenses' collection should have two expenses", 3,
 				updatedMonth.getExpenses().size());
+	}
+
+	@Test(expected = LazyInitializationException.class)
+	public void testLoadMonthByIdLazyExpenses() {
+		// define a household
+		Household household = getTestHousehold(true, false);
+
+		// save the household
+		Household createdHousehold = householdService.saveHousehold(household);
+
+		// define a month with the income
+		Month month = getTestMonth(createdHousehold, true);
+
+		// save a month
+		Month createdMonth = monthService.saveMonth(month);
+
+		// load the month by id, expenses is lazily loaded
+		Month loadedMonth = monthService.getMonthById(createdMonth.getId());
+		loadedMonth.getExpenses().size();
+	}
+	
+	@Test
+	public void testLoadMonthByIdEagerExpenses() {
+		// define a household
+		Household household = getTestHousehold(true, false);
+		
+		// save the household
+		Household createdHousehold = householdService.saveHousehold(household);
+		
+		// define a month with the income
+		Month month = getTestMonth(createdHousehold, true);
+		
+		// save a month
+		Month createdMonth = monthService.saveMonth(month);
+		
+		// load the month by id, expenses is eagerly loaded
+		Month loadedMonth = monthService.getMonthById(createdMonth.getId(), true);
+		loadedMonth.getExpenses().size();
+		
+		// ensure the updatedMonth collection should have three expenses
+		assertEquals("The loadedMonth 'Expenses' collection should have two expenses", 2,
+				loadedMonth.getExpenses().size());
 	}
 }

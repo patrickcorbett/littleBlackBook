@@ -2,9 +2,8 @@ package com.pcorbett.littleBlackBook;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import com.pcorbett.littleBlackBook.domain.db.Household;
 import com.pcorbett.littleBlackBook.domain.db.Income;
@@ -28,10 +27,14 @@ public abstract class BaseTest {
 		Household household = new Household();
 		household.setName("TEST HOUSEHOLD");
 		if (pIncomes) {
-			household.setIncomes(getTestIncomes());
+			for (Income income : getTestIncomes()) {
+				household.addIncome(income);
+			}
 		}
 		if (pExpenses) {
-			household.setExpenses(getTestExpenses());
+			for (RecurringExpense expense : getTestExpenses()) {
+				household.addExpense(expense);
+			}
 		}
 
 		return household;
@@ -49,9 +52,9 @@ public abstract class BaseTest {
 		return houseDadIncome;
 	}
 
-	public Set<Income> getTestIncomes() {
+	public List<Income> getTestIncomes() {
 		// create incomes
-		Set<Income> incomes = new LinkedHashSet<Income>();
+		List<Income> incomes = new LinkedList<Income>();
 
 		// create and add an income
 		incomes.add(getTestIncome());
@@ -59,9 +62,9 @@ public abstract class BaseTest {
 		return incomes;
 	}
 
-	public Set<RecurringExpense> getTestExpenses() {
+	public List<RecurringExpense> getTestExpenses() {
 		// create expenses
-		Set<RecurringExpense> expenses = new LinkedHashSet<RecurringExpense>();
+		List<RecurringExpense> expenses = new LinkedList<RecurringExpense>();
 
 		// RENT
 		RecurringExpense rentExpense = new RecurringExpense();
@@ -99,15 +102,17 @@ public abstract class BaseTest {
 		month.setProjectedNet(new BigDecimal(3000.00));
 
 		if (pExpenses) {
-			month.setExpenses(getSingleExpenses());
+			for (SingleExpense expense : getSingleExpenses()) {
+				month.addExpense(expense);
+			}
 		}
 
 		return month;
 	}
 
-	public Set<SingleExpense> getSingleExpenses() {
+	public List<SingleExpense> getSingleExpenses() {
 		// create expenses
-		Set<SingleExpense> expenses = new LinkedHashSet<SingleExpense>();
+		List<SingleExpense> expenses = new LinkedList<SingleExpense>();
 
 		// RENT
 		SingleExpense rentExpense = new SingleExpense();

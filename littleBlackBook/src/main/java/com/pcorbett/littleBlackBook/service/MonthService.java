@@ -10,7 +10,9 @@ import com.pcorbett.littleBlackBook.domain.db.Month;
 public interface MonthService {
 
 	Month saveMonth(Month pMonth);
-	
-	void deleteAllMonths();
-	
+
+	Month getMonthById(Long pId);
+
+	Month getMonthById(Long pId, boolean pLoadExpenses);
+
 }

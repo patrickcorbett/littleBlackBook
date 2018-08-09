@@ -6,16 +6,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 /**
  * POJO Class for the description of a household and its income
@@ -37,15 +33,17 @@ public class Household {
 	@Column(name = "NAME")
 	private String name;
 
-	@Fetch(FetchMode.JOIN)
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "HOUSEHOLD_INCOMES", joinColumns = @JoinColumn(name = "HOUSEHOLD_ID"), inverseJoinColumns = @JoinColumn(name = "INCOME_ID"))
+	@OneToMany(mappedBy = "household", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<Income> incomes = new LinkedHashSet<>();
 
-	@Fetch(FetchMode.JOIN)
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "HOUSEHOLD_EXPENSES", joinColumns = @JoinColumn(name = "HOUSEHOLD_ID"), inverseJoinColumns = @JoinColumn(name = "EXPENSE_ID"))
+	@OneToMany(mappedBy = "household", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<RecurringExpense> expenses = new LinkedHashSet<>();
+
+	@OneToMany(mappedBy = "household", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Set<Month> months = new LinkedHashSet<>();
 
 	/**
 	 * @return the id
@@ -83,11 +81,11 @@ public class Household {
 	}
 
 	/**
-	 * @param incomes the incomes to set
+	 * @param pIncome the income to add
 	 */
-	public void setIncomes(Set<Income> incomes) {
-		this.incomes.clear();
-		this.incomes.addAll(incomes);
+	public void addIncome(Income pIncome) {
+		incomes.add(pIncome);
+		pIncome.setHousehold(this);
 	}
 
 	/**
@@ -98,11 +96,26 @@ public class Household {
 	}
 
 	/**
-	 * @param expenses the expenses to set
+	 * @param pExpense the expense to add
 	 */
-	public void setExpenses(Set<RecurringExpense> expenses) {
-		this.expenses.clear();
-		this.expenses.addAll(expenses);
+	public void addExpense(RecurringExpense pExpense) {
+		expenses.add(pExpense);
+		pExpense.setHousehold(this);
+	}
+
+	/**
+	 * @return the months
+	 */
+	public Set<Month> getMonths() {
+		return months;
+	}
+
+	/**
+	 * @param pMonth the month to add
+	 */
+	public void addMonth(Month pMonth) {
+		months.add(pMonth);
+		pMonth.setHousehold(this);
 	}
 
 }

@@ -2,17 +2,16 @@ package com.pcorbett.littleBlackBook.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.hibernate.LazyInitializationException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -135,7 +134,9 @@ public class HouseholdServiceTest extends BaseTest {
 		Household createdHousehold = householdService.saveHousehold(household);
 
 		// add incomes to the household
-		createdHousehold.setIncomes(getTestIncomes());
+		for (Income income : getTestIncomes()) {
+			createdHousehold.addIncome(income);
+		}
 
 		// save the incomes
 		Household updatedHousehold = householdService.saveHousehold(household);
@@ -169,17 +170,19 @@ public class HouseholdServiceTest extends BaseTest {
 		assertNotNull("The expenses list should not be null", createdHousehold.getExpenses());
 		assertEquals("The household should have two expenses", getTestExpenses().size(),
 				createdHousehold.getExpenses().size());
-		
+
 		// get first income
 		RecurringExpense firstExpense = createdHousehold.getExpenses().iterator().next();
 		RecurringExpense firstTestExpense = getTestExpenses().iterator().next();
 
 		assertNotNull("The Expense ID should not be null", firstExpense.getId());
 
-		assertEquals("The Expense 'Description' should match", firstExpense.getDescription(), firstTestExpense.getDescription());
+		assertEquals("The Expense 'Description' should match", firstExpense.getDescription(),
+				firstTestExpense.getDescription());
 		assertEquals("The Expense 'Amount' should match", firstExpense.getAmount(), firstTestExpense.getAmount());
 		assertEquals("The Expense 'Priority' should match", firstExpense.getPriority(), firstTestExpense.getPriority());
-		assertEquals("The Expense 'DebitOnDOM' should match", firstExpense.getDebitOnDOM(), firstTestExpense.getDebitOnDOM());
+		assertEquals("The Expense 'DebitOnDOM' should match", firstExpense.getDebitOnDOM(),
+				firstTestExpense.getDebitOnDOM());
 	}
 
 	@Test
@@ -191,7 +194,9 @@ public class HouseholdServiceTest extends BaseTest {
 		Household createdHousehold = householdService.saveHousehold(household);
 
 		// add incomes to the household
-		createdHousehold.setIncomes(getTestIncomes());
+		for (Income income : getTestIncomes()) {
+			createdHousehold.addIncome(income);
+		}
 
 		// update the household
 		Household updatedHouseholdWithIncome = householdService.saveHousehold(createdHousehold);
@@ -205,7 +210,10 @@ public class HouseholdServiceTest extends BaseTest {
 				updatedHouseholdWithIncome.getIncomes().size());
 
 		// update the household again
-		updatedHouseholdWithIncome.setExpenses(getTestExpenses());
+		for (RecurringExpense expense : getTestExpenses()) {
+			updatedHouseholdWithIncome.addExpense(expense);
+		}
+
 		Household updatedHouseholdWithIncomeAndExpenses = householdService.saveHousehold(updatedHouseholdWithIncome);
 
 		assertNotNull("The expenses list should not be null", updatedHouseholdWithIncomeAndExpenses.getExpenses());
@@ -228,7 +236,7 @@ public class HouseholdServiceTest extends BaseTest {
 		assertEquals("The household list should contain one item", 1, households.size());
 
 		// read by id
-		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId());
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId(), true, true, false);
 
 		assertNotNull("The income list should not be null", loadedHousehold.getIncomes());
 		assertEquals("The household should have one income", getTestIncomes().size(),
@@ -248,7 +256,7 @@ public class HouseholdServiceTest extends BaseTest {
 		Household createdHousehold = householdService.saveHousehold(household);
 
 		// read by id
-		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId());
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId(), false, true, false);
 
 		assertEquals("The household should have two expenses", getTestExpenses().size(),
 				loadedHousehold.getExpenses().size());
@@ -264,7 +272,7 @@ public class HouseholdServiceTest extends BaseTest {
 		assertEquals("The household should have one expense", 1, updatedHousehold.getExpenses().size());
 
 		// read by id
-		Household reloadedHousehold = householdService.getHouseholdById(updatedHousehold.getId());
+		Household reloadedHousehold = householdService.getHouseholdById(updatedHousehold.getId(), false, true, false);
 
 		assertEquals("The household should have one expense", 1, reloadedHousehold.getExpenses().size());
 	}
@@ -278,7 +286,7 @@ public class HouseholdServiceTest extends BaseTest {
 		Household createdHousehold = householdService.saveHousehold(household);
 
 		// read by id
-		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId());
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId(), true, false, false);
 
 		assertEquals("The household should have only 1 income", getTestIncomes().size(),
 				loadedHousehold.getIncomes().size());
@@ -294,33 +302,104 @@ public class HouseholdServiceTest extends BaseTest {
 		assertEquals("The household should have no incomes", 0, updatedHousehold.getIncomes().size());
 
 		// read by id
-		Household reloadedHousehold = householdService.getHouseholdById(updatedHousehold.getId());
+		Household reloadedHousehold = householdService.getHouseholdById(updatedHousehold.getId(), true, false, false);
 
 		assertEquals("The household should have no incomes", 0, reloadedHousehold.getIncomes().size());
 	}
 
-	/**
-	 * A test to ensure an Income can only exist in one household, attempting to add
-	 * an existing income to an new household should result in a database error
-	 */
-	@Test(expected = DataIntegrityViolationException.class)
-	public void testHouseholdIncomeOneToOneConstraint() {
+	@Test(expected = LazyInitializationException.class)
+	public void testLoadHouseholdByIdLazyIncomes() {
 		// define a household
-		Household household1 = getTestHousehold(false, false);
-		Household household2 = getTestHousehold(false, false);
+		Household household = getTestHousehold(true, true);
 
 		// save the household
-		Household createdHousehold1 = householdService.saveHousehold(household1);
-		Household createdHousehold2 = householdService.saveHousehold(household2);
+		Household createdHousehold = householdService.saveHousehold(household);
 
-		// assign income to a household1
-		createdHousehold1.setIncomes(getTestIncomes());
-
-		// update household1
-		Household updatedHousehold1 = householdService.saveHousehold(createdHousehold1);
-
-		// update the household2 with the same income, should fail!
-		createdHousehold2.setIncomes(updatedHousehold1.getIncomes());
-		householdService.saveHousehold(createdHousehold2);
+		// read by id
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId());
+		
+		loadedHousehold.getIncomes().size();
 	}
+	
+	@Test(expected = LazyInitializationException.class)
+	public void testLoadHouseholdByIdLazyExpenses() {
+		// define a household
+		Household household = getTestHousehold(true, true);
+		
+		// save the household
+		Household createdHousehold = householdService.saveHousehold(household);
+		
+		// read by id
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId());
+		
+		loadedHousehold.getExpenses().size();
+	}
+	
+	@Test(expected = LazyInitializationException.class)
+	public void testLoadHouseholdByIdLazyMonths() {
+		// define a household
+		Household household = getTestHousehold(true, true);
+		
+		// save the household
+		Household createdHousehold = householdService.saveHousehold(household);
+		
+		// read by id
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId());
+		
+		loadedHousehold.getMonths().size();
+	}
+	
+	@Test
+	public void testLoadHouseholdByIdEagerIncomes() {
+		// define a household
+		Household household = getTestHousehold(true, true);
+
+		// save the household
+		Household createdHousehold = householdService.saveHousehold(household);
+
+		// read by id
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId(), true, false, false);
+		assertEquals("The household should have only 1 income", getTestIncomes().size(),
+				loadedHousehold.getIncomes().size());
+	}
+	
+	@Test
+	public void testLoadHouseholdByIdEagerExpenses() {
+		// define a household
+		Household household = getTestHousehold(true, true);
+		
+		// save the household
+		Household createdHousehold = householdService.saveHousehold(household);
+		
+		// read by id
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId(), true, true, false);
+		
+		assertEquals("The household should have only 1 income", getTestIncomes().size(),
+				loadedHousehold.getIncomes().size());
+		
+		assertEquals("The household should have only 2 expenses", getTestExpenses().size(),
+				loadedHousehold.getExpenses().size());
+	}
+	
+	@Test
+	public void testLoadHouseholdByIdEagerMonths() {
+		// define a household
+		Household household = getTestHousehold(true, true);
+		
+		// save the household
+		Household createdHousehold = householdService.saveHousehold(household);
+		
+		// read by id
+		Household loadedHousehold = householdService.getHouseholdById(createdHousehold.getId(), true, true, true);
+		
+		assertEquals("The household should have only 1 income", getTestIncomes().size(),
+				loadedHousehold.getIncomes().size());
+		
+		assertEquals("The household should have only 2 expenses", getTestExpenses().size(),
+				loadedHousehold.getExpenses().size());	
+		
+		assertEquals("The household should have only no months", 0,
+				loadedHousehold.getMonths().size());	
+		}
+
 }

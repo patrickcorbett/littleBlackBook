@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -45,6 +47,10 @@ public class Income {
 	@Column(name = "CURRENCY")
 	private String currency;
 
+	@ManyToOne
+	@JoinColumn(name = "FK_HOUSEHOLD")
+	private Household household;
+
 	/**
 	 * @return the id
 	 */
@@ -60,8 +66,7 @@ public class Income {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -75,8 +80,7 @@ public class Income {
 	}
 
 	/**
-	 * @param gross
-	 *            the gross to set
+	 * @param gross the gross to set
 	 */
 	public void setGross(BigDecimal gross) {
 		this.gross = gross;
@@ -90,8 +94,7 @@ public class Income {
 	}
 
 	/**
-	 * @param net
-	 *            the net to set
+	 * @param net the net to set
 	 */
 	public void setNet(BigDecimal net) {
 		this.net = net;
@@ -105,8 +108,7 @@ public class Income {
 	}
 
 	/**
-	 * @param validFrom
-	 *            the validFrom to set
+	 * @param validFrom the validFrom to set
 	 */
 	public void setValidFrom(Date validFrom) {
 		this.validFrom = validFrom;
@@ -120,8 +122,7 @@ public class Income {
 	}
 
 	/**
-	 * @param validTo
-	 *            the validTo to set
+	 * @param validTo the validTo to set
 	 */
 	public void setValidTo(Date validTo) {
 		this.validTo = validTo;
@@ -135,11 +136,24 @@ public class Income {
 	}
 
 	/**
-	 * @param currency
-	 *            the currency to set
+	 * @param currency the currency to set
 	 */
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	/**
+	 * @return the household
+	 */
+	public Household getHousehold() {
+		return household;
+	}
+
+	/**
+	 * @param pHousehold the household to set
+	 */
+	public void setHousehold(Household pHousehold) {
+		household = pHousehold;
 	}
 
 }

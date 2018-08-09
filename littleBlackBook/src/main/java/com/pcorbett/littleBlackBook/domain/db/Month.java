@@ -7,13 +7,13 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -33,10 +33,6 @@ public class Month {
 	@Column(name = "ID")
 	private Long id;
 
-	@JoinColumn(name = "HOUSEHOLD_ID", nullable = false)
-	@OneToOne
-	private Household household;
-
 	@Column(name = "YEAR")
 	private String year;
 
@@ -49,9 +45,13 @@ public class Month {
 	@Column(name = "PROJECTED_NET")
 	private BigDecimal projectedNet;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "MONTH_EXPENSES", joinColumns = @JoinColumn(name = "MONTH_ID"), inverseJoinColumns = @JoinColumn(name = "EXPENSE_ID"))
+	@OneToMany(mappedBy = "month", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<SingleExpense> expenses = new LinkedHashSet<>();
+
+	@ManyToOne
+	@JoinColumn(name = "FK_HOUSEHOLD", nullable = false)
+	private Household household;
 
 	public Long getId() {
 		return id;
@@ -101,9 +101,9 @@ public class Month {
 		return expenses;
 	}
 
-	public void setExpenses(Set<SingleExpense> pExpenses) {
-		this.expenses.clear();
-		this.expenses.addAll(pExpenses);
+	public void addExpense(SingleExpense pExpense) {
+		this.expenses.add(pExpense);
+		pExpense.setMonth(this);
 	}
 
 }

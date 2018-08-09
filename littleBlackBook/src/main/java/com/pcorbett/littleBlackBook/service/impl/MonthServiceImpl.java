@@ -1,5 +1,7 @@
 package com.pcorbett.littleBlackBook.service.impl;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -25,8 +27,25 @@ public class MonthServiceImpl implements MonthService {
 	}
 
 	@Override
-	public void deleteAllMonths() {
-		monthDao.deleteAll();
+	public Month getMonthById(Long pId) {
+		return getMonthById(pId, false);
+	}
+
+	@Override
+	public Month getMonthById(Long pId, boolean pLoadExpenses) {
+		Optional<Month> opMonth = monthDao.findById(pId);
+
+		Month month = null;
+
+		if (opMonth.isPresent()) {
+			month = opMonth.get();
+
+			if (pLoadExpenses) {
+				month.getExpenses().size();
+			}
+		}
+
+		return month;
 	}
 
 }
