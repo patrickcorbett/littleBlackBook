@@ -45,6 +45,10 @@ public class Household {
 			CascadeType.REMOVE }, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<Month> months = new LinkedHashSet<>();
 
+	@OneToMany(mappedBy = "household", cascade = { CascadeType.MERGE,
+			CascadeType.REMOVE }, orphanRemoval = false, fetch = FetchType.LAZY)
+	private Set<User> users = new LinkedHashSet<>();
+
 	/**
 	 * @return the id
 	 */
@@ -116,6 +120,29 @@ public class Household {
 	public void addMonth(Month pMonth) {
 		months.add(pMonth);
 		pMonth.setHousehold(this);
+	}
+
+	/**
+	 * @return the users
+	 */
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	/**
+	 * @param pUser the user to add
+	 */
+	public void addUser(User pUser) {
+		users.add(pUser);
+		pUser.joinHousehold(this);
+	}
+
+	/**
+	 * @param pUser the user to remove
+	 */
+	public void removeUser(User pUser) {
+		users.remove(pUser);
+		pUser.leaveHousehold();
 	}
 
 }

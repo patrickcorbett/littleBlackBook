@@ -10,6 +10,7 @@ import com.pcorbett.littleBlackBook.domain.db.Income;
 import com.pcorbett.littleBlackBook.domain.db.Month;
 import com.pcorbett.littleBlackBook.domain.db.RecurringExpense;
 import com.pcorbett.littleBlackBook.domain.db.SingleExpense;
+import com.pcorbett.littleBlackBook.domain.db.User;
 
 /**
  * JUnit test to populate and test the tables and their relationships and
@@ -21,6 +22,19 @@ import com.pcorbett.littleBlackBook.domain.db.SingleExpense;
  *
  */
 public abstract class BaseTest {
+
+	private static int count = 1;
+
+	public User getUser() {
+		int uniqueCount = BaseTest.count++;
+		User user = new User();
+		user.setUsername("testuser" + uniqueCount);
+		user.setFirstName("Test");
+		user.setSurname("User");
+		user.setEmailAddress("test" + uniqueCount + "@Test.com");
+		user.setPassword("1234");
+		return user;
+	}
 
 	public Household getTestHousehold(boolean pIncomes, boolean pExpenses) {
 		// create a household

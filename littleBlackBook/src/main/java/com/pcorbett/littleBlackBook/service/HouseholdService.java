@@ -19,7 +19,7 @@ public interface HouseholdService {
 	
 	Household getHouseholdById(Long pId);
 	
-	Household getHouseholdById(Long pId, boolean pLoadIncomes, boolean pLoadExpenses, boolean pLoadMonths);
+	Household getHouseholdById(Long pId, boolean pLoadIncomes, boolean pLoadExpenses, boolean pLoadMonths, boolean pLoadUsers);
 
 	void deleteAllHouseholds();
 
