@@ -53,8 +53,7 @@ public class Expense {
 	}
 
 	/**
-	 * @param description
-	 *            the description to set
+	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
 		Description = description;
@@ -68,8 +67,7 @@ public class Expense {
 	}
 
 	/**
-	 * @param amount
-	 *            the amount to set
+	 * @param amount the amount to set
 	 */
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
@@ -83,8 +81,7 @@ public class Expense {
 	}
 
 	/**
-	 * @param formula
-	 *            the formula to set
+	 * @param formula the formula to set
 	 */
 	public void setFormula(String formula) {
 		this.formula = formula;

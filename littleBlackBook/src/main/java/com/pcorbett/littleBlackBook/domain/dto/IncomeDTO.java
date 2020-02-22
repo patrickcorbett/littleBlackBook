@@ -1,7 +1,6 @@
 package com.pcorbett.littleBlackBook.domain.dto;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @author Patrick Corbett

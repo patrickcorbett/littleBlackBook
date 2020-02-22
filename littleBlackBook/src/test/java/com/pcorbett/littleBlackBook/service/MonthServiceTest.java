@@ -275,25 +275,25 @@ public class MonthServiceTest extends BaseTest {
 		Month loadedMonth = monthService.getMonthById(createdMonth.getId());
 		loadedMonth.getExpenses().size();
 	}
-	
+
 	@Test
 	public void testLoadMonthByIdEagerExpenses() {
 		// define a household
 		Household household = getTestHousehold(true, false);
-		
+
 		// save the household
 		Household createdHousehold = householdService.saveHousehold(household);
-		
+
 		// define a month with the income
 		Month month = getTestMonth(createdHousehold, true);
-		
+
 		// save a month
 		Month createdMonth = monthService.saveMonth(month);
-		
+
 		// load the month by id, expenses is eagerly loaded
 		Month loadedMonth = monthService.getMonthById(createdMonth.getId(), true);
 		loadedMonth.getExpenses().size();
-		
+
 		// ensure the updatedMonth collection should have three expenses
 		assertEquals("The loadedMonth 'Expenses' collection should have two expenses", 2,
 				loadedMonth.getExpenses().size());

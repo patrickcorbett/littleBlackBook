@@ -1,6 +1,5 @@
 package com.pcorbett.littleBlackBook.domain.db;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -142,7 +141,7 @@ public class User {
 	public void joinHousehold(Household pHousehold) {
 		household = pHousehold;
 	}
-	
+
 	/**
 	 * @param pHousehold the household to join
 	 */
