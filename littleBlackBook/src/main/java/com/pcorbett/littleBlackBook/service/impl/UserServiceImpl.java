@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.pcorbett.littleBlackBook.dao.HouseholdDao;
 import com.pcorbett.littleBlackBook.dao.UserDao;
 import com.pcorbett.littleBlackBook.domain.db.User;
 import com.pcorbett.littleBlackBook.service.UserService;
@@ -21,11 +20,15 @@ public class UserServiceImpl implements UserService {
 
 	@Inject
 	private UserDao userDao;
-	@Inject
-	private HouseholdDao householdDao;
 
 	@Override
-	public User saveUser(User pUser) {
+	public User createUser(User pUser) {
+		// TODO validation
+		return userDao.save(pUser);
+	}
+
+	@Override
+	public User updateUser(User pUser) {
 		return userDao.save(pUser);
 	}
 
@@ -35,6 +38,17 @@ public class UserServiceImpl implements UserService {
 		Optional<User> user = userDao.findOneByUsernameOrEmailAddress(pUsernameOrEmailAddress, pUsernameOrEmailAddress);
 		// TODO validation of username/password
 		return user.isPresent() ? user.get() : null;
+	}
+
+	@Override
+	public void deleteUser(Long pUserId) {
+		userDao.deleteById(pUserId);
+	}
+
+	@Override
+	public void forgottenPassword(String pUsernameOrEmailAddress) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

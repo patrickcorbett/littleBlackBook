@@ -9,8 +9,13 @@ import com.pcorbett.littleBlackBook.domain.db.User;
  */
 public interface UserService {
 
-	User saveUser(User pUser);
+	User createUser(User pUser);
+
+	User updateUser(User pUser);
+
+	void deleteUser(Long pUserId);
 
 	User login(String pUsernameOrEmailAddress, String pPassword);
 
+	void forgottenPassword(String pUsernameOrEmailAddress);
 }

@@ -15,4 +15,14 @@ import com.pcorbett.littleBlackBook.domain.db.Household;
 @Repository
 public interface HouseholdDao extends JpaRepository<Household, Long> {
 
+	/*
+	 * Save Household can be used to:
+	 *  - Add Income
+	 *  - Remove Income
+	 *  - Add Expense
+	 *  - Remove Expense
+	 *  - Add Month
+	 *  - Remove Month
+	 */
+	
 }

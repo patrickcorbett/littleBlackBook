@@ -2,6 +2,7 @@ package com.pcorbett.littleBlackBook.domain.db;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,8 +42,15 @@ public class User {
 	private String password;
 
 	@OneToOne
+	@JoinColumn(name = "FK_INCOME")
+	private Income income;
+
+	@OneToOne
 	@JoinColumn(name = "FK_HOUSEHOLD")
 	private Household household;
+
+	@OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
+	private Household ownedHousehold;
 
 	/**
 	 * @return the id
@@ -129,6 +137,20 @@ public class User {
 	}
 
 	/**
+	 * @return the income
+	 */
+	public Income getIncome() {
+		return income;
+	}
+
+	/**
+	 * @param pIncome the income to set
+	 */
+	public void setIncome(Income pIncome) {
+		income = pIncome;
+	}
+
+	/**
 	 * @return the household
 	 */
 	public Household getHousehold() {
@@ -136,17 +158,17 @@ public class User {
 	}
 
 	/**
-	 * @param pHousehold the household to join
+	 * @param pHousehold the household to set
 	 */
-	public void joinHousehold(Household pHousehold) {
+	public void setHousehold(Household pHousehold) {
 		household = pHousehold;
 	}
 
 	/**
-	 * @param pHousehold the household to join
+	 * @return the ownedHousehold
 	 */
-	public void leaveHousehold() {
-		household = null;
+	public Household getOwnedHousehold() {
+		return ownedHousehold;
 	}
 
 }

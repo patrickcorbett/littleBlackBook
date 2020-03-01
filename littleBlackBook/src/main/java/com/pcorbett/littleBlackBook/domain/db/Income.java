@@ -47,10 +47,6 @@ public class Income {
 	@Column(name = "CURRENCY")
 	private String currency;
 
-	@ManyToOne
-	@JoinColumn(name = "FK_HOUSEHOLD")
-	private Household household;
-
 	/**
 	 * @return the id
 	 */
@@ -140,20 +136,6 @@ public class Income {
 	 */
 	public void setCurrency(String currency) {
 		this.currency = currency;
-	}
-
-	/**
-	 * @return the household
-	 */
-	public Household getHousehold() {
-		return household;
-	}
-
-	/**
-	 * @param pHousehold the household to set
-	 */
-	public void setHousehold(Household pHousehold) {
-		household = pHousehold;
 	}
 
 }

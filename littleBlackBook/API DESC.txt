@@ -1,0 +1,33 @@
+-USER
+-- create user
+-- update user / change password
+-- delete user
+-- LOGIN
+-- forgot password
+
+-Household
+-- create household
+-- add household user / share / invite
+-- remove household user 
+-- leave / delete household
+
+-Household-Income
+-- add income 
+-- remove income
+-- update income
+
+-Household-Expense
+-- add Expense 
+-- remove Expense
+-- update Expense
+
+-Household-month
+-- add Month
+-- remove month
+-- update month
+
+-Household-month-expense
+-- add Expense 
+-- remove Expense
+-- update Expense
+-- complete expense

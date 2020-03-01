@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @created 14.07.2018
  */
 @Entity
-@Table(name = "RECURRING_EXPENSE")
+@Table
 @PrimaryKeyJoinColumn(name = "ID")
 public class RecurringExpense extends Expense {
 

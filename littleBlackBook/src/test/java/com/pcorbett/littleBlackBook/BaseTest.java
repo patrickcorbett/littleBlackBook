@@ -36,15 +36,10 @@ public abstract class BaseTest {
 		return user;
 	}
 
-	public Household getTestHousehold(boolean pIncomes, boolean pExpenses) {
+	public Household getTestHousehold(boolean pExpenses) {
 		// create a household
 		Household household = new Household();
 		household.setName("TEST HOUSEHOLD");
-		if (pIncomes) {
-			for (Income income : getTestIncomes()) {
-				household.addIncome(income);
-			}
-		}
 		if (pExpenses) {
 			for (RecurringExpense expense : getTestExpenses()) {
 				household.addExpense(expense);
