@@ -1,30 +1,52 @@
 -USER
 -- create user
+PUT /user
 -- update user / change password
+POST /user/{0}
 -- delete user
+DELETE /user/{0}
 -- LOGIN
+POST user/login/
 -- forgot password
+POST /user/forgot
 
 -Household
+-- get household
+GET /household/{0}
 -- create household
+PUT /household/user/{0}
+-- update household - name
+POST /household/{0}
+-- delete household
+DELETE /household/{0}
 -- add household user / share / invite
+POST /household/{0}/user/{0}
 -- remove household user 
--- leave / delete household
-
--Household-Income
--- add income 
--- remove income
--- update income
+DELETE /household/{0}/user/{0}
+-- leave household
+DELETE /household/{0}/user/{0}/owner/{0}
 
 -Household-Expense
+-- get expenses
+GET /household/{0}/expenses/
+-- get expense
+GET /household/{0}/expenses/{0}
 -- add Expense 
+PUT /household/{0}/expenses
 -- remove Expense
+DELETE /household/{0}/expenses/{0}
 -- update Expense
+POST /household/{0}/expenses/{0}
 
 -Household-month
+-- get month
+GET /household/{0}/months/{0}
 -- add Month
+PUT /household/{0}/months
 -- remove month
+DELETE /household/{0}/months/{0}
 -- update month
+POST /household/{0}/months/{0}
 
 -Household-month-expense
 -- add Expense 

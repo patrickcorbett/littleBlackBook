@@ -22,7 +22,7 @@ import com.pcorbett.littleBlackBook.service.HouseholdMonthService;
  * @created 14.09.2019
  */
 @Service
-public class HouseholdMonthServiceImpl implements HouseholdMonthService {
+public class HouseholdMonthServiceImpl extends AbstractServiceImpl implements HouseholdMonthService {
 	@Inject
 	private HouseholdDao householdDao;
 

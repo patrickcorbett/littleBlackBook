@@ -13,6 +13,8 @@ import com.pcorbett.littleBlackBook.domain.db.Household;
 import com.pcorbett.littleBlackBook.domain.db.Income;
 import com.pcorbett.littleBlackBook.domain.db.RecurringExpense;
 import com.pcorbett.littleBlackBook.domain.db.User;
+import com.pcorbett.littleBlackBook.exceptions.HouseholdNotFoundException;
+import com.pcorbett.littleBlackBook.exceptions.UserNotFoundException;
 import com.pcorbett.littleBlackBook.service.HouseholdService;
 
 /**
@@ -21,46 +23,29 @@ import com.pcorbett.littleBlackBook.service.HouseholdService;
  * @created 14.07.2018
  */
 @Service
-public class HouseholdServiceImpl implements HouseholdService {
+public class HouseholdServiceImpl extends AbstractServiceImpl implements HouseholdService {
 
-	@Inject
-	private UserDao userDao;
-
-	@Inject
-	private HouseholdDao householdDao;
-
-	private User getUser(Long pUserId) {
-		Optional<User> user = userDao.findById(pUserId);
-		if (user.isPresent()) {
-			return user.get();
-		}
-
-		throw new IllegalArgumentException(String.format("User '%s' not found!!", pUserId));
-	}
+	// TODO validate that the user is allowed to perform actions for the household
 
 	@Override
 	public Household getHousehold(Long pUserId) {
 		// Load user
-		User user = getUser(pUserId);
+		User user = getUserById(pUserId);
 
-		Optional<Household> opHousehold = householdDao.findById(user.getHousehold().getId());
+		Household household = getHouseholdById(user.getHousehold().getId());
 
-		Household household = null;
+		//throw new HouseholdNotFoundException(String.format("Household for user '%s' not found!!", pUserId));
+		
+		// include the months
+		household.getMonths().size();
 
-		if (opHousehold.isPresent()) {
-			household = opHousehold.get();
-			// include the months
-			household.getMonths().size();
-			return household;
-		}
-
-		throw new IllegalArgumentException(String.format("Household for user '%s' not found!!", pUserId));
+		return household;
 	}
 
 	@Override
 	public Household createHousehold(Long pUserId, Household pHousehold) {
 		// Load user
-		User user = getUser(pUserId);
+		User user = getUserById(pUserId);
 
 		// validate that the user doesn't have a household
 		if (user.getHousehold() != null) {
@@ -81,45 +66,61 @@ public class HouseholdServiceImpl implements HouseholdService {
 	}
 
 	@Override
-	public Household updateHousehold(Household pHousehold) {
+	public Household updateHouseholdName(Long pHouseholdId, String pHouseholdName) {
+		Household household = getHouseholdById(pHouseholdId);
+		household.setName(pHouseholdName);
+		return householdDao.save(household);
+	}
+
+	@Override
+	public void deleteHousehold(Long pUserId) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public Household addHouseholdUser(Long pHouseholdId, Long pUserId) {
-		Optional<Household> dbHousehold = householdDao.findById(pHouseholdId);
-		Optional<User> dbUser = userDao.findById(pUserId);
-		if (dbHousehold.isPresent() && dbUser.isPresent()) {
-			Household household = dbHousehold.get();
-			User user = dbUser.get();
-
-			// validate that the user doesn't have a household
-			if (user.getHousehold() != null) {
-				// Household is already assigned
-				return null;
-			}
-
-			household.addUser(user);
-			return householdDao.save(household);
+		Household household = getHouseholdById(pHouseholdId);
+		User user = getUserById(pUserId);
+		
+		// validate that the user doesn't have a household
+		if (user.getHousehold() != null) {
+			// Household is already assigned
+			return null;
 		}
-		return null;
+		
+		household.addUser(user);
+		return householdDao.save(household);
 	}
 
 	@Override
 	public Household removeHouseholdUser(Long pHouseholdId, Long pUserId) {
-		// TODO Auto-generated method stub
-		return null;
+		Household household = getHouseholdById(pHouseholdId);
+		User user = getUserById(pUserId);
+		
+		// validate that the user has a household
+		if (user.getHousehold() == null) {
+			// Household is not assigned
+			throw new IllegalArgumentException(String.format("User %s has no assigned Household!!", pUserId));
+		}
+		
+		// Ensure the user is in the household
+		if (!household.getUsers().contains(user)) {
+			//user not in household
+			throw new IllegalArgumentException(String.format("User %s is not in Household %s!!", pUserId, pHouseholdId));
+		}
+		
+		household.removeUser(user);
+		return householdDao.save(household);
 	}
 
 	@Override
 	public Household leaveHousehold(Long pOwnerId, Long pNewOwnerId) {
 		// check that both users have been found
 		if (pOwnerId == null) {
-			throw new IllegalArgumentException("The current household owner cannot be null");
+			throw new UserNotFoundException("The current household owner cannot be null");
 		}
 		if (pNewOwnerId == null) {
-			throw new IllegalArgumentException("The new household owner cannot be null");
+			throw new UserNotFoundException("The new household owner cannot be null");
 		}
 
 		// lookup the users by id
@@ -128,11 +129,11 @@ public class HouseholdServiceImpl implements HouseholdService {
 
 		// check that both users have been found
 		if (!opCurrentOwner.isPresent()) {
-			throw new IllegalArgumentException(
+			throw new UserNotFoundException(
 					String.format("The current household owner with id '%s' could not be found", pOwnerId));
 		}
 		if (!opNewOwner.isPresent()) {
-			throw new IllegalArgumentException(
+			throw new UserNotFoundException(
 					String.format("The new household owner with id '%s' could not be found", pNewOwnerId));
 		}
 
@@ -169,42 +170,6 @@ public class HouseholdServiceImpl implements HouseholdService {
 
 		// update the household
 		return householdDao.save(household);
-	}
-
-	@Override
-	public void deleteHousehold(Long pUserId) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<Income> getHouseholdIncomes(Long pHouseholdId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Income getHouseholdIncome(Long pIncomeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Household createHouseholdIncome(Long pHouseholdId, Income pIncome) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Household updateHouseholdIncome(Long pHouseholdId, Income pIncome) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Household deleteHouseholdIncome(Long pHouseholdId, Income pIncomeId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

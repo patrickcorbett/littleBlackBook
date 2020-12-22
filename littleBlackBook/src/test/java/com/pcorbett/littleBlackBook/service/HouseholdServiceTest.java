@@ -24,6 +24,8 @@ import com.pcorbett.littleBlackBook.domain.db.Household;
 import com.pcorbett.littleBlackBook.domain.db.Income;
 import com.pcorbett.littleBlackBook.domain.db.RecurringExpense;
 import com.pcorbett.littleBlackBook.domain.db.User;
+import com.pcorbett.littleBlackBook.exceptions.HouseholdNotFoundException;
+import com.pcorbett.littleBlackBook.exceptions.UserNotFoundException;
 
 /**
  * JUnit test to test the Household service
@@ -131,17 +133,17 @@ public class HouseholdServiceTest extends BaseTest {
 		// TODO
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = UserNotFoundException.class)
 	public void failLeaveHouseholdNullCurrentOwner() {
 		householdService.leaveHousehold(null, null);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = UserNotFoundException.class)
 	public void failLeaveHouseholdNullNewOwner() {
 		householdService.leaveHousehold(-1L, null);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = UserNotFoundException.class)
 	public void failLeaveHouseholdInvalidCurrentOwner() {
 		// create user
 		User createdUser = userService.createUser(getUser());
@@ -155,7 +157,7 @@ public class HouseholdServiceTest extends BaseTest {
 		householdService.leaveHousehold(-1L, createdUser.getId());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = UserNotFoundException.class)
 	public void failLeaveHouseholdInvalidNewOwner() {
 		// create user
 		User createdUser = userService.createUser(getUser());

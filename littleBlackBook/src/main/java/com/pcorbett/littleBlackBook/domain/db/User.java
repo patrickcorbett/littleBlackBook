@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * POJO Class for the description of a user
@@ -26,18 +28,23 @@ public class User {
 	@Column(name = "ID")
 	private Long id;
 
+	@NotEmpty
 	@Column(name = "USERNAME", unique = true)
 	private String username;
 
+	@NotEmpty
 	@Column(name = "FIRSTNAME")
 	private String firstName;
 
+	@NotEmpty
 	@Column(name = "SURNAME")
 	private String surname;
 
+	@NotEmpty
 	@Column(name = "EMAIL_ADDRESS", unique = true)
 	private String emailAddress;
 
+	@NotEmpty
 	@Column(name = "PASSWORD")
 	private String password;
 
